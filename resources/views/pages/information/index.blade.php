@@ -115,7 +115,9 @@
                     'excelHtml5',
                     'csvHtml5',
                     'pdfHtml5', "colvis"
-                ]
+                ],
+                "ordering": true, 
+                "order": [[ 0, 'asc' ]],
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
     </script>

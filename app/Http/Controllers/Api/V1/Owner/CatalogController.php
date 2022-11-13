@@ -23,6 +23,7 @@ class CatalogController extends Controller
         if(auth()->user()->tokenCan('ownerDo')){
             $catalogs = Catalog::query()
             ->whereBelongsTo($laundry)
+            ->orderBy('name')
             ->get();
 
             return CatalogResource::collection($catalogs);

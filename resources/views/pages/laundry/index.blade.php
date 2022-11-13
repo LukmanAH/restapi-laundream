@@ -54,16 +54,13 @@ Laundry
                                                     Detail
                                                 </button>
                                             </form>
-                                                <a href="{{ route('admin.laundries.edit', $laundry) }}"
-                                                    class="btn btn-xs btn-warning">
-                                                    Edit
-                                                </a>
+                                                
                                                 <form
                                                     action="{{ route('admin.laundries.status', $laundry) }}"
                                                     method="POST" class="d-inline-block">
                                                     @csrf
                                                     <button
-                                                        class="btn btn-xs @if ($laundry->status == '1') btn-danger @else btn-success @endif"
+                                                        class="btn btn-xs @if ($laundry->status == '1') btn-warning @else btn-success @endif"
                                                         value="{{ $laundry->status == '1' ? '0' : '1' }}"
                                                         type="submit" name="status"
                                                         onclick="return confirm('Konfirmasi')">
@@ -123,8 +120,10 @@ Laundry
             "buttons": ['copyHtml5',
                 'excelHtml5',
                 'csvHtml5',
-                'pdfHtml5', "colvis"
-            ]
+                'pdfHtml5', 
+            ],
+            "ordering": true, 
+            "order": [[ 0, 'asc' ]],
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 

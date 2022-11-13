@@ -7,6 +7,7 @@ use App\Models\Laundry;
 use App\Models\User;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Employee;
 use Exception;
 use Auth;
 use Validator;
@@ -45,7 +46,8 @@ class UserController extends Controller
         }
 
         $user = User::where('email', $request->email)->firstOrFail();
-            
+
+    
         $laundry = Laundry::query()
             ->whereBelongsTo($user)
             ->first();
@@ -56,6 +58,8 @@ class UserController extends Controller
         }else if($user->role == 2){
             $token = $user->createToken('laundream',['ownerDo'])->plainTextToken;
         }else if($user->role == 3){
+            $employee = Employee::where('user_id',$user->id)->first();
+            $laundry = Laundry::where('id', $employee->laundry_id)->first();
             $token = $user->createToken('laundream',['employeeDo'])->plainTextToken;
         }else if($user->role == 4){
             $token = $user->createToken('laundream',['customerDo'])->plainTextToken;

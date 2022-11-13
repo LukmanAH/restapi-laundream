@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionResource;
+use Carbon\Carbon;
 use App\Models\Laundry;
 use App\Models\Transaction;
+use App\Models\OperationalHour;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -60,8 +62,26 @@ class HomeController extends Controller
                 ->get();
 
             $revenue = $revenue->sum('amount') + $revenue->sum('delivery_fee');
+            
+            $operationalHour = json_decode(OperationalHour::whereBelongsTo($laundry)
+                ->where('day',Carbon::now()
+                ->isoFormat('dddd'))
+                ->first());
 
-            $condition = $laundry->condition;
+            $open = strtotime(Carbon::now()->toDateString() . ' ' . $operationalHour->open); 
+            
+            $close = strtotime(Carbon::now()->toDateString() . ' ' . $operationalHour->close);
+
+            $now = strtotime(Carbon::now()->toDateString() . ' ' . Carbon::now()->isoFormat('HH:mm')); 
+
+            //return response()->json([$operationalHour, $open, $close, $now]);
+            if($laundry->condition == 0){
+                $condition = 0;
+            }else if($open <= $now && $close >= $now){
+                $condition = 1;
+             }else{
+                $condition = 0;
+             }
 
             return response()->json([
                 'confirmation' => TransactionResource::collection($confirmation),

@@ -24,6 +24,7 @@ class ParfumeController extends Controller
 
             $parfumes = Parfume::query()
                 ->whereBelongsTo($laundry)
+                ->orderBy('name')
                 ->get();
 
             return ParfumeResource::collection($parfumes);

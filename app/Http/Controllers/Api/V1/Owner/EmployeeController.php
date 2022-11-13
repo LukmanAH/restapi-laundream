@@ -28,6 +28,7 @@ class EmployeeController extends Controller
             $employee = Employee::query()
                 ->whereBelongsTo($laundry)
                 ->with('user')
+                ->orderBy('name')
                 ->get();
 
             return EmployeeResource::collection($employee);
