@@ -16,6 +16,12 @@ class HomeController extends Controller
     public function __invoke(Laundry $laundry)
     {
         if(auth()->user()->tokenCan('ownerDo')||auth()->user()->tokenCan('employeeDo')){
+
+            
+            $now = strtotime(Carbon::now()->toDateString() . ' ' . Carbon::now()->isoFormat('HH:mm')); 
+            $month = Carbon::now()->isoFormat('MM'); 
+            $year = Carbon::now()->isoFormat('Y'); 
+
             $confirmation = Transaction::query()
                 ->whereBelongsTo($laundry)
                 ->with(['user','laundry', 'catalog', 'parfume'])
@@ -59,6 +65,8 @@ class HomeController extends Controller
 
             $revenue = Transaction::query()
                 ->whereBelongsTo($laundry)
+                ->whereMonth('created_at', $month)                
+                ->whereYear('created_at', $year)
                 ->get();
 
             $revenue = $revenue->sum('amount') + $revenue->sum('delivery_fee');
@@ -72,7 +80,6 @@ class HomeController extends Controller
             
             $close = strtotime(Carbon::now()->toDateString() . ' ' . $operationalHour->close);
 
-            $now = strtotime(Carbon::now()->toDateString() . ' ' . Carbon::now()->isoFormat('HH:mm')); 
 
             //return response()->json([$operationalHour, $open, $close, $now]);
             if($laundry->condition == 0){
@@ -92,7 +99,8 @@ class HomeController extends Controller
                 'deliver' => TransactionResource::collection($deliver),
                 'all' => TransactionResource::collection($all),
                 'revenue' => $revenue + 0,
-                'condition' => $condition
+                'condition' => $condition,
+                'year' => $year,
             ], Response::HTTP_OK);
         }
         return response()->json("Permintaan ditolak");

@@ -114,7 +114,7 @@
                 "buttons": ['copyHtml5',
                     'excelHtml5',
                     'csvHtml5',
-                    'pdfHtml5', "colvis"
+                    'pdfHtml5',
                 ],
                 "ordering": true, 
                 "order": [[ 0, 'asc' ]],

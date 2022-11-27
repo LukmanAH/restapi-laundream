@@ -55,14 +55,14 @@
                             @if ($information->picture)
                                 <div class="row">
                                     <div class="col-md-6 ">
-                                        <img src="{{ $information->picture }}" alt="" width="200" height="200">
+                                        <img src="https://silka-itera.s3.ap-southeast-3.amazonaws.com/{{$information->picture  }}" alt="" width="350" height="200">
                                     </div>
                                 </div>
                             @endif
                             <div class="row">
                                 <div class="col-md-6 ">
                                     <div class="form-group">
-                                        <label for="picture" class="required">Deskripsi</label>
+                                        <label for="picture" class="required">Poster</label>
                                         <input type="file" class="form-control" id="picture" name="picture"
                                             accept=".png,.jpeg,.jpg">
                                     </div>
